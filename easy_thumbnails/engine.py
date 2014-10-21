@@ -52,6 +52,12 @@ def save_image(image, destination=None, filename=None, **options):
             # Try again, without optimization (PIL can't optimize an image
             # larger than ImageFile.MAXBLOCK, which is 64k by default)
             pass
+    if format == 'GIF':
+        import images2gif
+        images2gif.writeGif(destination, image)
+        if hasattr(destination, 'seek'):
+            destination.seek(0)
+        return destination
     image.save(destination, format=format, **options)
     if hasattr(destination, 'seek'):
         destination.seek(0)
