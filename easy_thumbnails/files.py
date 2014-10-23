@@ -151,7 +151,9 @@ class ThumbnailFile(ImageFieldFile):
         """
         if image:
             self._image_cache = image
-            self._dimensions_cache = image.size
+            # self._dimensions_cache = image.size
+            self._dimensions_cache = getattr(image, 'size', None) or \
+                                     getattr(image[0], 'size', None)
         else:
             if hasattr(self, '_image_cache'):
                 del self._cached_image
