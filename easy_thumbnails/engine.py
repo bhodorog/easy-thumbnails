@@ -53,7 +53,7 @@ def save_image(image, destination=None, filename=None, **options):
             # larger than ImageFile.MAXBLOCK, which is 64k by default)
             pass
     if format == 'GIF':
-        import images2gif
+        import easy_thumbnails.external.images2gif as images2gif
         images2gif.writeGif(destination, image)
         if hasattr(destination, 'seek'):
             destination.seek(0)
