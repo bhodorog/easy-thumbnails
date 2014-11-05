@@ -480,8 +480,15 @@ class GifWriter:
 
 
 ## Exposed functions
+def writeGif_toFile(filename, images, *args, **kwargs):
+    fp = open(filename, 'wb')
+    try:
+        writeGif(fp, images,  *args, **kwargs)
+    finally:
+        fp.close()
 
-def writeGif(filename, images, duration=0.1, repeat=True, dither=False,
+
+def writeGif(fp, images, duration=0.1, repeat=True, dither=False,
                 nq=0, subRectangles=True, dispose=None):
     """ writeGif(filename, images, duration=0.1, repeat=True, dither=False,
                     nq=0, subRectangles=True, dispose=None)
@@ -573,14 +580,11 @@ def writeGif(filename, images, duration=0.1, repeat=True, dither=False,
     images = gifWriter.convertImagesToPIL(images, dither, nq)
 
     # Write
-    fp = open(filename, 'wb')
-    try:
-        gifWriter.writeGifToFile(fp, images, duration, loops, xy, dispose)
-    finally:
-        fp.close()
+    gifWriter.writeGifToFile(fp, images, duration, loops, xy, dispose)
 
 
-def readGif(filename, asNumpy=True):
+
+def readGif_fromFile(filename, asNumpy=True):
     """ readGif(filename, asNumpy=True)
 
     Read images from an animated GIF file.  Returns a list of numpy
@@ -602,6 +606,11 @@ def readGif(filename, asNumpy=True):
 
     # Load file using PIL
     pilIm = PIL.Image.open(filename)
+
+    return readGif(pilIm, asNumpy)
+
+
+def readGif(pilIm, asNumpy=True):
     pilIm.seek(0)
 
     # Read all images inside
